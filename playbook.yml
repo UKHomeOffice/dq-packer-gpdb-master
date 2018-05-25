@@ -24,13 +24,7 @@
       - mdadm
       - cryptsetup
       - cloud-utils
-    become: true
-
-  - name: Yum Install Dependencies
-    yum: name={{ item }}
-    with_items:
       - python-pip
-      - cloud-utils
     become: true
 
   - name: Install Python 2.7

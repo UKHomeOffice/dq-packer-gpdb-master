@@ -24,28 +24,17 @@
       - mdadm
       - cryptsetup
       - cloud-utils
-      - python-pip
     become: true
 
-  - name: Install Python 2.7
-    unarchive:
-     src: https://www.python.org/ftp/python/2.7.10/Python-2.7.10.tgz
-     dest: /usr/src
-     remote_src: yes
-    become: true
-
-  - name: Configure Python 2.7
-    shell: ./configure
+  - name: PIP
+    shell: curl https://bootstrap.pypa.io/get-pip.py | python
     args:
-      chdir: /usr/src/Python-2.7.10
-    creates: /usr/src/Python-2.7.10/Modules
-    become: true
+      creates: /bin/pip
 
-  - name: Pip Install AWSCLI
-    pip: 'name={{ item }}'
-    with_items:
-      - AWSCLI
-    become: true
+  - name: AWS cli
+    shell: pip install awscli
+    args:
+      creates: /bin/aws
 
   - name: Download cloudwatch logs agent
     get_url:

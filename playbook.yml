@@ -73,13 +73,13 @@
       owner: wherescape
       group: scriptrunners
     with_items:
-      - { src: '/u01/EF/data/', dest: '/u01/EF'}
-      - { src: '/u01/EF/master/', dest: '/u01/EF'}
-      - { src: '/home/wherescape/', dest: '/u02/s4'}
-      - { src: '/home/wherescape/', dest: '/u02/nbtc'}
-      - { src: '/home/wherescape/', dest: '/u02/carrier_portal_export'}
-      - { src: '/home/wherescape/', dest: '/u01/EF'}
-      - { src: '/home/wherescape/prod/', dest: '/u02/ssm'}
+      - { src: '/u01/EF/data', dest: '/u01/EF/'}
+      - { src: '/u01/EF/master/EF', dest: '/u01/EF/'}
+      - { src: '/home/wherescape/s4', dest: '/u02/s4/'}
+      - { src: '/home/wherescape/nbtc', dest: '/u02/nbtc/'}
+      - { src: '/home/wherescape/scripts', dest: '/u02/carrier_portal_export/'}
+      - { src: '/home/wherescape/EF', dest: '/u01/EF/'}
+      - { src: '/home/wherescape/prod/ssm', dest: '/u02/ssm/'}
 
   - name: Yum Install Pre Dependencies
     yum: name={{ item }}

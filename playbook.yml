@@ -67,37 +67,37 @@
   - name: Symlink Master folder
     shell: ln -s /u01/EF EF
     args:
-      chdir: u01/EF/master/
+      chdir: /u01/EF/master/
 
   - name: Symlink Wherescape S4
     shell: ln -s /u02/s4 s4
     args:
-      chdir: home/wherescape/
+      chdir: /home/wherescape/
 
   - name: Symlink Wherescape NBTC
     shell: ln -s /u02/nbtc nbtc
     args:
-      chdir: home/wherescape/
+      chdir: /home/wherescape/
 
   - name: Symlink Wherescape CRT
     shell: ln -s /u02/carrier_portal_export scripts
     args:
-      chdir: home/wherescape/
+      chdir: /home/wherescape/
 
   - name: Symlink Wherescape EF
     shell: ln -s /u01/EF EF
     args:
-      chdir: home/wherescape/
+      chdir: /home/wherescape/
 
   - name: Symlink Wherescape EF
     shell: ln -s /u02/ssm ssm
     args:
-      chdir: home/wherescape/prod/
+      chdir: /home/wherescape/prod/
 
   - name: Symlink EF data
     shell: ln -s /u01/EF EF
     args:
-      chdir: u01/EF/data/      
+      chdir: /u01/EF/data/      
 
   - name: Yum Install Pre Dependencies
     yum: name={{ item }}

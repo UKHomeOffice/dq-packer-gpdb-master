@@ -10,6 +10,77 @@
   hosts: all
   become: true
   tasks:
+  - name: Scriptrunners group
+    group:
+      name: scriptrunners
+      system: yes
+
+  - name: Create wherescape user
+    user:
+      name: wherescape
+      group: scriptrunners
+
+  - name: Make directory structure
+    file:
+      path: /{{ item }}
+      state: directory
+      mode: 0775
+      recurse: yes
+      owner: wherescape
+      group: scriptrunners
+    with_items:
+      - u01
+      - u01/wherescape_data
+      - u01/wherescape_data/scripts
+      - u01/EF
+      - u01/EF/master
+      - u01/EF/data
+      - u02
+      - u02/carrier_portal_export
+      - u02/carrier_portal_export/logs
+      - u02/s4
+      - u02/s4/s4
+      - u02/s4/s4/data
+      - u02/s4/s4/data/xml
+      - u02/s4/data
+      - u02/s4/data/xml_modified
+      - u02/s4/data/zipfiles
+      - u02/s4/scripts
+      - u02/s4/scripts/logs
+      - u02/nbtc
+      - u02/nbtc/data
+      - u02/EF
+      - u02/ssm
+      - u02/ssm/data
+      - u02/ssm/data/manual
+      - u02/ssm/scripts
+      - home/wherescape/prod
+
+  - file:
+      src: /u01/EF
+      dest: /EF
+      force: yes
+      owner: wherescape
+      group: scriptrunners
+      state: link
+
+  - name: Symlink script files
+    file:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+      force: yes
+      state: link
+      owner: wherescape
+      group: scriptrunners
+    with_items:
+      - { src: '/u01/EF/data/', dest: '/u01/EF'}
+      - { src: '/u01/EF/master/', dest: '/u01/EF'}
+      - { src: '/home/wherescape/', dest: '/u02/s4'}
+      - { src: '/home/wherescape/', dest: '/u02/nbtc'}
+      - { src: '/home/wherescape/', dest: '/u02/carrier_portal_export'}
+      - { src: '/home/wherescape/', dest: '/u01/EF'}
+      - { src: '/home/wherescape/prod/', dest: '/u02/ssm'}
+
   - name: Yum Install Pre Dependencies
     yum: name={{ item }}
     with_items:

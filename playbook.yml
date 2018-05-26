@@ -64,22 +64,40 @@
       group: scriptrunners
       state: link
 
-  - name: Symlink script files
-    file:
-      src: "{{ item.src }}"
-      dest: "{{ item.dest }}"
-      force: yes
-      state: link
-      owner: wherescape
-      group: scriptrunners
-    with_items:
-      - { src: '/u01/EF/data', dest: '/u01/EF'}
-      - { src: '/u01/EF/master/EF', dest: '/u01/EF'}
-      - { src: '/home/wherescape/s4', dest: '/u02/s4'}
-      - { src: '/home/wherescape/nbtc', dest: '/u02/nbtc'}
-      - { src: '/home/wherescape/scripts', dest: '/u02/carrier_portal_export'}
-      - { src: '/home/wherescape/EF', dest: '/u01/EF'}
-      - { src: '/home/wherescape/prod/ssm', dest: '/u02/ssm'}
+  - name: Symlink Master folder
+    shell: ln -s /u01/EF EF
+    args:
+      chdir: u01/EF/master/
+
+  - name: Symlink Wherescape S4
+    shell: ln -s /u02/s4 s4
+    args:
+      chdir: home/wherescape/
+
+  - name: Symlink Wherescape NBTC
+    shell: ln -s /u02/nbtc nbtc
+    args:
+      chdir: home/wherescape/
+
+  - name: Symlink Wherescape CRT
+    shell: ln -s /u02/carrier_portal_export scripts
+    args:
+      chdir: home/wherescape/
+
+  - name: Symlink Wherescape EF
+    shell: ln -s /u01/EF EF
+    args:
+      chdir: home/wherescape/
+
+  - name: Symlink Wherescape EF
+    shell: ln -s /u02/ssm ssm
+    args:
+      chdir: home/wherescape/prod/
+
+  - name: Symlink EF data
+    shell: ln -s /u01/EF EF
+    args:
+      chdir: u01/EF/data/      
 
   - name: Yum Install Pre Dependencies
     yum: name={{ item }}

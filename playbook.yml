@@ -97,7 +97,7 @@
   - name: Symlink EF data
     shell: ln -s /u01/EF EF
     args:
-      chdir: /u01/EF/data/      
+      chdir: /u01/EF/data/
 
   - name: Yum Install Pre Dependencies
     yum: name={{ item }}
@@ -172,3 +172,17 @@
       name: Start awslogs
       special_time: reboot
       job: /usr/bin/startcloudwatchlogs.sh
+
+  - name: Bootstrap
+    copy:
+      src: bootstrap-raid.sh
+      dest: /usr/bin/bootstrap-raid.sh
+      owner: root
+      group: root
+      mode: 0755
+
+  - name: Make Cron Job to start bootstrap-raid at boot
+    cron:
+      name: Start bootstrap
+      special_time: reboot
+      job: /usr/bin/bootstrap-raid.sh

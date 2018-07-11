@@ -39,9 +39,9 @@
 
   - name: Set SWAP file permissions
     file: /dm-2
-    owner: root
-    group: root
-    mode: 0600
+      owner: root
+      group: root
+      mode: 0600
 
   - name: Make SWAP file
     command: mkswap /dm-2
@@ -285,7 +285,7 @@
         log_group_name = /GPDB/cloud-init/output
         log_stream_name = {instance_id}
         datetime_format = %Y-%m-%d %H:%M:%S,%f
-        
+
   - name: Install cloudwatch log agent
     environment:
       LC_ALL: C

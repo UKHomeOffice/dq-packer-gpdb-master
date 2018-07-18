@@ -64,6 +64,12 @@
       name: gpadmin
       group: gpadmin
 
+  - name: Create SSH folder
+    file: path=/home/gpadmin/.ssh state=directory owner=gpadmin group=gpadmin mode=700
+
+  - name: Create authorized_keys file
+    file: path=/home/gpadmin/.ssh/authorized_keys state=file owner=gpadmin group=gpadmin mode=644
+
   - name: Turn off SELinux
     selinux:
       state: disabled
@@ -209,6 +215,25 @@
       group: scriptrunners
       state: link
 
+  - name: Create script folder
+     file: /home/gpadmin/{{ item }}
+       state: directory
+       mode: 0755
+       recurse: yes
+       owner: gpadmin
+       group: gpadmin
+    with_items:
+      - app_scripts
+      - GP_Shell_Scripts
+
+  - name: Create script log folder
+     file: /home/gpadmin/GP_Shell_Scripts/log
+       state: directory
+       mode: 0755
+       recurse: yes
+       owner: gpadmin
+       group: gpadmin
+
   - name: Symlink Master folder
     shell: ln -s /u01/EF EF
     args:
@@ -323,7 +348,7 @@
       job: /usr/bin/startcloudwatchlogs.sh
       state: present
 
-  - name: Bootstrap
+  - name: Copy Bootstrap
     copy:
       src: bootstrap-raid.sh
       dest: /usr/bin/bootstrap-raid.sh
@@ -336,6 +361,23 @@
       name: Start bootstrap
       special_time: reboot
       job: /usr/bin/bootstrap-raid.sh > /var/log/swap_setup.log 2>&1
+      state: present
+
+  - name: Copy S3 backup script
+    copy:
+      src: s3_upload.sh
+      dest: /home/gpadmin/GP_Shell_Scripts/s3_upload.sh
+      owner: gpadmin
+      group: gpadmin
+      mode: 0755
+
+  - name: Make Cron Job to run S3 transfer at 2AM
+    cron:
+      name: Start S3 transfer
+      minute: 0
+      hour: 2
+      user: gpadmin
+      job: /home/gpadmin/GP_Shell_Scripts/s3_upload.sh > /home/gpadmin/GP_Shell_Scripts/log/S3_upload.log_$(date +\%Y\%m\%d_\%H:\%M) 2>&1
       state: present
 
   - name: Hostile exkeys

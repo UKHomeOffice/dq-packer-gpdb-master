@@ -235,7 +235,8 @@
       state: link
 
   - name: Create script folder
-     file: /home/gpadmin/{{ item }}
+     file:
+       path: /home/gpadmin/{{ item }}
        state: directory
        mode: 0755
        recurse: yes
@@ -246,7 +247,8 @@
       - GP_Shell_Scripts
 
   - name: Create script log folder
-     file: /home/gpadmin/GP_Shell_Scripts/log
+     file:
+       path: /home/gpadmin/GP_Shell_Scripts/log
        state: directory
        mode: 0755
        recurse: yes

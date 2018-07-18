@@ -37,10 +37,24 @@
     filesystem: fstype=xfs dev=/dev/md0
 
   - name: Create mount folder
-    file: path=/gpdb state=directory owner=root group=root mode=0755
+    file:
+      path: /gpdb
+      state: directory
+      owner: root
+      group: root
+      mode: 0755
 
   - name: Mount RAID0
-    mount: name=/gpdb src=/dev/md0 fstype=xfs opts=nodev,noatime,inode64,allocsize=16m state=mounted
+    mount:
+      name: /gpdb
+      src: /dev/md0
+      fstype: xfs
+      opts:
+        - nodev
+        - noatime
+        - inode64
+        - allocsize=16m
+      state: mounted
 
   - name: Save RAID to fstab for persistence
     shell: echo "/dev/md0 /gpdb xfs nodev,noatime,inode64,allocsize=16m 0 0" >> /etc/fstab
@@ -49,7 +63,12 @@
     shell: mdadm -E -s -v >> /etc/mdadm.conf
 
   - name: Create ephemeral directory
-    file: path=/ephemeral state=directory owner=root group=root mode=0755
+    file:
+      path: /ephemeral
+      state: directory
+      owner: root
+      group: root
+      mode: 0755
 
   - name: Scriptrunners group
     group:
@@ -72,10 +91,20 @@
       group: gpadmin
 
   - name: Create SSH folder
-    file: path=/home/gpadmin/.ssh state=directory owner=gpadmin group=gpadmin mode=700
+    file:
+      path: /home/gpadmin/.ssh
+      state: directory
+      owner: gpadmin
+      group: gpadmin
+      mode: 0700
 
   - name: Create authorized_keys file
-    file: path=/home/gpadmin/.ssh/authorized_keys state=file owner=gpadmin group=gpadmin mode=644
+    file:
+      path: /home/gpadmin/.ssh/authorized_keys
+      state: touch
+      owner: gpadmin
+      group: gpadmin
+      mode: 0644
 
   - name: Turn off SELinux
     selinux:
@@ -300,20 +329,70 @@
       content: |
         [general]
         state_file = /var/awslogs/state/agent-state
-        [/var/log/syslog]
-        file = /var/log/syslog
+        [/var/log/messages]
+        file = /var/log/messages
         log_group_name = /GPDB/system
-        log_stream_name = {instance_id}
+        log_stream_name = {hostname}
         datetime_format = %b %d %H:%M:%S
         [/GPDB/cloud-init]
         file = /var/log/cloud-init.log
         log_group_name = /GPDB/cloud-init
-        log_stream_name = {instance_id}
+        log_stream_name = {hostname}
         datetime_format = %Y-%m-%d %H:%M:%S,%f
-        [/GPDB/cloud-init/output]
-        file = /var/log/cloud-init-output.log
-        log_group_name = /GPDB/cloud-init/output
-        log_stream_name = {instance_id}
+        [/GPDB/awslogs]
+        file = /var/log/awslogs.log
+        log_group_name = /GPDB/awslogs.log
+        log_stream_name = {hostname}
+        datetime_format = %Y-%m-%d %H:%M:%S,%f
+        [/GPDB/secure]
+        file = /var/log/secure
+        log_group_name = /GPDB/secure
+        log_stream_name = {hostname}
+        datetime_format = %Y-%m-%d %H:%M:%S,%f
+        [/GPDB/cron]
+        file = /var/log/cron
+        log_group_name = /GPDB/cron
+        log_stream_name = {hostname}
+        datetime_format = %Y-%m-%d %H:%M:%S,%f
+        [/GPDB/gpcrondump]
+        file = /gpdb/master/gpcrondump_backups_NRT/gpcrondump_*
+        log_group_name = /GPDB/gpcrondump
+        log_stream_name = {hostname}
+        datetime_format = %Y-%m-%d %H:%M:%S,%f
+        [/GPDB/Analyze_DQ_rpt_ext]
+        file = /home/gpadmin/GP_Shell_Scripts/log/Analyze_DQ_rpt_ext_*
+        log_group_name = /GPDB/Analyze_DQ_rpt_ext
+        log_stream_name = {hostname}
+        datetime_format = %Y-%m-%d %H:%M:%S,%f
+        [/GPDB/DQ_rpt_ext_Analyze_Database]
+        file = /home/gpadmin/GP_Shell_Scripts/log/DQ_rpt_ext_Analyze_Database_*
+        log_group_name = /GPDB/DQ_rpt_ext_Analyze_Database
+        log_stream_name = {hostname}
+        datetime_format = %Y-%m-%d %H:%M:%S,%f
+        [/GPDB/GP_delete_old_backups]
+        file = /home/gpadmin/GP_Shell_Scripts/log/GP_delete_old_backups*
+        log_group_name = /GPDB/GP_delete_old_backups
+        log_stream_name = {hostname}
+        datetime_format = %Y-%m-%d %H:%M:%S,%f
+        [/GPDB/GP_maintain_pglogs]
+        file = /home/gpadmin/GP_Shell_Scripts/log/GP_maintain_pglogs*
+        log_group_name = /GPDB/GP_maintain_pglogs
+        log_stream_name = {hostname}
+        datetime_format = %Y-%m-%d %H:%M:%S,%f
+        [/GPDB/S3_upload]
+        file = /home/gpadmin/GP_Shell_Scripts/log/S3_*
+        log_group_name = /GPDB/S3_upload
+        log_stream_name = {hostname}
+        datetime_format = %Y-%m-%d %H:%M:%S,%f
+        [/GPDB/vacuum_pg_catalog]
+        file = /home/gpadmin/GP_Shell_Scripts/log/vacuum_pg_*
+        log_group_name = /GPDB/vacuum_pg_catalog
+        log_stream_name = {hostname}
+        datetime_format = %Y-%m-%d %H:%M:%S,%f
+        [/GPDB/pg_log]
+        file = /gpdb/master/gpseg-1/pg_log/gpdb*
+        log_group_name = /GPDB/pg_log
+        log_stream_name = {hostname}
         datetime_format = %Y-%m-%d %H:%M:%S,%f
 
   - name: Install cloudwatch log agent

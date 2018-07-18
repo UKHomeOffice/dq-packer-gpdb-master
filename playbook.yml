@@ -43,7 +43,13 @@
     when: mdadm_check.rc != 0
 
   - name: Volume group
-    lvg: vg=mapper lv=secure pvs=/dev/md0
+    lvg: vg=mapper pvs=/dev/md0
+
+  - name: Configure LVM
+    lvol:
+      vg: mapper
+      lv: secure
+      size: +100%FREE
 
   - name: Create file system
     filesystem: fstype=xfs dev=/dev/mapper/secure

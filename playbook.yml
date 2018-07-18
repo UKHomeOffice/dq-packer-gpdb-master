@@ -202,8 +202,8 @@
       - { ip: 10.1.31.31, name: sdw6, nic: sdw6-2, dnsname: ip-10-1-31-31.eu-west-2.compute.internal, dnsshort: ip-10-1-31-31 }
       - { ip: 10.1.32.32, name: sdw6, nic: sdw6-3, dnsname: ip-10-1-32-32.eu-west-2.compute.internal, dnsshort: ip-10-1-32-32 }
       - { ip: 10.1.33.33, name: sdw6, nic: sdw6-4, dnsname: ip-10-1-33-33.eu-west-2.compute.internal, dnsshort: ip-10-1-33-33 }
-      - { ip: 10.1.6.100, name: DATA-INGEST1, dnsname: ip-10-1-6-100.eu-west-2.compute.internal, dnsshort: ip-10-1-6-100 }
-      - { ip: 10.1.8.100, name: DATA-PIPELINE1, dnsname: ip-10-1-8-100.eu-west-2.compute.internal, dnsshort: ip-10-1-8-100 }
+      - { ip: 10.1.6.100, name: DATA-INGEST1, nic: data-ingest1, dnsname: ip-10-1-6-100.eu-west-2.compute.internal, dnsshort: ip-10-1-6-100 }
+      - { ip: 10.1.8.100, name: DATA-PIPELINE1, nic: data-pipeline1, dnsname: ip-10-1-8-100.eu-west-2.compute.internal, dnsshort: ip-10-1-8-100 }
 
   - name: Make directory structure
     file:

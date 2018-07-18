@@ -51,11 +51,7 @@
       name: /gpdb
       src: /dev/md0
       fstype: xfs
-      opts:
-        - nodev
-        - noatime
-        - inode64
-        - allocsize=16m
+      opts: nodev,noatime,inode64,allocsize=16m
       state: mounted
 
   - name: Save RAID to fstab for persistence

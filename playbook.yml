@@ -235,25 +235,25 @@
       state: link
 
   - name: Create script folder
-     file:
-       path: /home/gpadmin/{{ item }}
-       state: directory
-       mode: 0755
-       recurse: yes
-       owner: gpadmin
-       group: gpadmin
+    file:
+      path: /home/gpadmin/{{ item }}
+      state: directory
+      mode: 0755
+      recurse: yes
+      owner: gpadmin
+      group: gpadmin
     with_items:
       - app_scripts
       - GP_Shell_Scripts
 
   - name: Create script log folder
-     file:
-       path: /home/gpadmin/GP_Shell_Scripts/log
-       state: directory
-       mode: 0755
-       recurse: yes
-       owner: gpadmin
-       group: gpadmin
+    file:
+      path: /home/gpadmin/GP_Shell_Scripts/log
+      state: directory
+      mode: 0755
+      recurse: yes
+      owner: gpadmin
+      group: gpadmin
 
   - name: Symlink Master folder
     shell: ln -s /u01/EF EF

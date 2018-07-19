@@ -104,6 +104,24 @@
       group: gpadmin
       mode: 0644
 
+  - name: Create backup exluce folder
+    file:
+      path: /ephemeral/master/gpcrondump_backups_NRT/exclude
+      state: directory
+      owner: gpadmin
+      group: gpadmin
+      recurse: yes
+      mode: 0755
+
+  - name: Create backup file locations
+    file:
+      path: /ephemeral/master/backups_NRT
+      state: directory
+      owner: gpadmin
+      group: gpadmin
+      recurse: yes
+      mode: 0755
+
   - name: Turn off SELinux
     selinux:
       state: disabled

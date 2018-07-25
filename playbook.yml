@@ -184,6 +184,14 @@
       group: gpadmin
       mode: 0644
 
+  - name: Create mount folder
+    file:
+      path: /gpdb
+      state: directory
+      owner: gpadmin
+      group: gpadmin
+      mode: 0755
+
   - name: Create GPDB directory structure
     file:
       path: /gpdb/{{ item }}
@@ -227,7 +235,7 @@
       group: gpadmin
     with_items:
       - app_scripts/prod/partition_maintenance
-      - GP_Shell_Scripts/log      
+      - GP_Shell_Scripts/log
 
   - name: Make directory structure
     file:

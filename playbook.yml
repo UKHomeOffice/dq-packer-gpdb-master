@@ -464,6 +464,51 @@
       job: sleep 120 && /usr/bin/ephemeral_folders.sh > /var/log/ephemeral_folders_$(date +\%Y\%m\%d_\%H:\%M).log 2>&1
       state: present
 
+  - name: Make Cron Job to create Database backup
+    cron:
+      name: Start GPCronDump
+      minute: 1
+      hour: 20
+      user: gpadmin
+      job: /home/gpadmin/GP_Shell_Scripts/GP_backup_database_DQ_db.sh
+      state: present
+
+  - name: Make Cron Job to run vacuum
+    cron:
+      name: Vacuum catalog each day
+      minute: 1
+      hour: 1
+      user: gpadmin
+      job: /home/gpadmin/GP_Shell_Scripts/GP_vacuum_catalog.sh > /home/gpadmin/GP_Shell_Scripts/log/vacuum_pg_catalog.log_$(date +\%w) 2>&1
+      state: present
+
+  - name: Make Cron Job to cleanup logs
+    cron:
+      name: Log cleanup
+      minute: 1
+      hour: 4
+      user: gpadmin
+      job: /home/gpadmin/GP_Shell_Scripts/GP_maintain_pglogs.sh > /home/gpadmin/GP_Shell_Scripts/log/GP_maintain_pglogs.log_$(date +\%w) 2>&1
+      state: present
+
+  - name: Make Cron Job to delete old backups
+    cron:
+      name: Delete old backups
+      minute: 45
+      hour: 19
+      user: gpadmin
+      job: /home/gpadmin/GP_Shell_Scripts/GP_delete_old_backups.sh > /home/gpadmin/GP_Shell_Scripts/log/GP_delete_old_backups_$(date +\%w).log 2>&1
+      state: present
+
+  - name: Make Cron Job to Analyse ext DB
+    cron:
+      name: Analyse ext DB
+      minute: 1
+      hour: 6
+      user: gpadmin
+      job: /home/gpadmin/GP_Shell_Scripts/GP_ANALYZE_database_DQ_rpt_ext.sh > /home/gpadmin/GP_Shell_Scripts/log/Analyze_DQ_rpt_ext_$(date +\%Y\%m\%d_\%H:\%M).log 2>&1
+      state: present
+
   - name: Hostile exkeys
     copy:
       src: hostfile_exkeys

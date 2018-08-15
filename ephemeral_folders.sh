@@ -1,5 +1,4 @@
 #!/bin/bash
-sudo su
 # set base ownership of u01 and u02 to gpadmin
 chown -R gpadmin:scriptrunners /u01/
 chown -R gpadmin:scriptrunners /u02/
@@ -13,10 +12,9 @@ chmod -R u+w /u02
 #------------------------------------------
 # /home/gpadmin directories
 #------------------------------------------
-su gpadmin
 mkdir -p /home/gpadmin/GP_Shell_Scripts/log
 mkdir -p /home/gpadmin/app_scripts/prod/partition_maintenance
-exit
+chown -R gpadmin:gpadmin /home/gpadmin
 find /home/gpadmin/GP_Shell_Scripts -type f -exec chmod -R 775 {} \;
 find /home/gpadmin/app_scripts/prod/partition_maintenance -type f -exec chmod -R 775 {} \;
 
@@ -24,10 +22,8 @@ find /home/gpadmin/app_scripts/prod/partition_maintenance -type f -exec chmod -R
 #------------------------------------------
 # /home/wherescape directories
 #------------------------------------------
-su wherescape
 mkdir -p /home/wherescape/prod
 mkdir -p /home/wherescape/gpAdminLogs
-exit
 chown -R wherescape:scriptrunners /home/wherescape/prod
 chown -R wherescape:scriptrunners /home/wherescape/gpAdminLogs
 find /home/wherescape/ -type f -exec chmod -R 664 {} \;
@@ -36,7 +32,6 @@ find /home/wherescape/ -type f -exec chmod -R 664 {} \;
 #------------------------------------------
 # /gpdb/ directories
 #------------------------------------------
-su gpadmin
 mkdir -p /gpdb/master/backups
 mkdir -p /gpdb/master/backups_NRT
 mkdir -p /gpdb/master/backups_NRT/db_dumps
@@ -45,7 +40,7 @@ mkdir -p /gpdb/master/backups_rpt_ext
 mkdir -p /gpdb/master/gpcrondump_backups
 mkdir -p /gpdb/master/gpcrondump_backups_NRT
 mkdir -p /gpdb/master/gpcrondump_backups_rpt_ext
-exit
+chown -R gpadmin:gpadmin /gpdb
 find /gpdb/master -type d -exec chmod 775 {} \;
 find /gpdb/master/gpcrondump_backups_NRT -type f -exec chmod -R 700 {} \;
 find /gpdb/master/gpcrondump_backups_rpt_ext -type f -exec chmod -R 700 {} \;

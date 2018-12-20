@@ -42,6 +42,7 @@ mkdir -p /gpdb/master/gpcrondump_backups_NRT
 mkdir -p /gpdb/master/gpcrondump_backups_rpt_ext
 chown -R gpadmin:gpadmin /gpdb
 find /gpdb/master -type d -exec chmod 775 {} \;
+find /gpdb/master/gpseg* -type d -exec chmod -R 700 {} \;
 find /gpdb/master/gpcrondump_backups_NRT -type f -exec chmod -R 700 {} \;
 find /gpdb/master/gpcrondump_backups_rpt_ext -type f -exec chmod -R 700 {} \;
 
